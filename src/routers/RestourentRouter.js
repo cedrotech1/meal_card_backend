@@ -1,0 +1,21 @@
+import express from "express";
+import {
+  addRestaurentController,
+  RestaurentWithAllController,
+  deleteOneRestaurentController,
+  getOneRestaurentController,
+  updateOneRestaurentController,
+  // RestaurentWithAllController,
+} from "../controllers/RestaurentsController";
+import { protect } from "../middlewares/protect";
+
+const router = express.Router();
+
+// router.delete("/delete/:id", protect, deleteOneRestaurentController);
+router.post("/add/", protect, addRestaurentController);
+router.get("/", protect, RestaurentWithAllController);
+// router.get("/all", protect, RestaurentWithAllController);
+// router.get("/one/:id", protect, getOneRestaurentController);
+// router.put("/:id", protect, updateOneRestaurentController);
+
+export default router;
