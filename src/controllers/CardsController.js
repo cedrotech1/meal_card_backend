@@ -1,47 +1,49 @@
-// RestaurentController.js
+// CardsController.js
 import {
-  RestaurentWithAll,
-  // getAllRestaurentes,
-  createRestaurent,
-  getAllRestaurentes,
-  deleteOneRestaurent,
-  checkExistingRestaurent,
-  getOneRestaurentWithDetails,
-  updateOneResto
-} from "../services/restaurentService";
+  CardsWithAll,
+  // getAllCardses,
+  createCards,
+  getAllCardses,
+  deleteOneCards,
+  checkExistingCards,
+  getOneCardsWithDetails,
+  // getAllCardsesWithModels,
+  updateOneResto,
+  
+} from "../services/CardsService";
 
-export const addRestaurentController = async (req, res) => {
+export const addCardsController = async (req, res) => {
   try {
-    if (req.user.role !== "superadmin") {
-      return res.status(401).json({
-        success: false,
-        message: "Not authorized, you are not superadmin",
-      });
-    }
+    // if (req.user.role !== "superadmin") {
+    //   return res.status(401).json({
+    //     success: false,
+    //     message: "Not authorized, you are not superadmin",
+    //   });
+    // }
 
-    req.body.name = req.body.name.toUpperCase();
+    // req.body.name = req.body.name.toUpperCase();
 
-    if (!req.body.name) {
-      return res.status(400).json({
-        success: false,
-        message: "Name is required",
-      });
-    }
+    // if (!req.body.name) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Name is required",
+    //   });
+    // }
 
-    const existingRestaurent = await checkExistingRestaurent(req.body.name);
-    if (existingRestaurent) {
-      console.log("Restaurent with the same name already exists ");
-      return res.status(400).json({
-        success: false,
-        message: "Restaurent with the same name already exists ",
-      });
-    }
+    // const existingCards = await checkExistingCards(req.body.name);
+    // if (existingCards) {
+    //   console.log("Cards with the same name already exists ");
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Cards with the same name already exists ",
+    //   });
+    // }
 
-    const newRestaurent = await createRestaurent(req.body);
+    const newCards = await createCards(req.body);
     return res.status(201).json({
       success: true,
-      message: "Restaurent created successfully",
-      Restaurent: newRestaurent,
+      message: "Cards created successfully",
+      Cards: newCards,
     });
   } catch (error) {
     console.error(error);
@@ -53,17 +55,17 @@ export const addRestaurentController = async (req, res) => {
   }
 };
 
-export const RestaurentWithAllController = async (req, res) => {
+export const CardsWithAllController = async (req, res) => {
   try {
-    const data = await getAllRestaurentes();
+    const data = await getAllCardses();
     if (!data) {
       return res.status(404).json({
-        message: "Restaurent not found",
+        message: "Cards not found",
       });
     }
     return res.status(200).json({
       success: true,
-      message: "Restaurent retrieved successfully",
+      message: "Cards retrieved successfully",
       data,
     });
   } catch (error) {
@@ -77,13 +79,13 @@ export const RestaurentWithAllController = async (req, res) => {
 
 
 
-export const getAllRestaurentesController = async (req, res) => {
+export const getAllCardsesController = async (req, res) => {
   try {
-    const Restaurentes = await getAllRestaurentes();
+    const Cardses = await getAllCardses();
     return res.status(200).json({
       success: true,
-      message: "Restaurentes retrieved successfully",
-      Restaurentes,
+      message: "Cardses retrieved successfully",
+      Cardses,
     });
   } catch (error) {
     return res.status(500).json({
@@ -93,7 +95,7 @@ export const getAllRestaurentesController = async (req, res) => {
   }
 };
 
-export const deleteOneRestaurentController = async (req, res) => {
+export const deleteOneCardsController = async (req, res) => {
   try {
     // if (req.user.role !== "superadmin") {
     //   return res.status(401).json({
@@ -102,17 +104,17 @@ export const deleteOneRestaurentController = async (req, res) => {
     //   });
     // }
 
-    const Restaurent = await deleteOneRestaurent(req.params.id);
-    if (!Restaurent) {
+    const Cards = await deleteOneCards(req.params.id);
+    if (!Cards) {
       return res.status(404).json({
         success: false,
-        message: "Restaurent not found",
+        message: "Cards not found",
       });
     }
     return res.status(200).json({
       success: true,
-      message: "Restaurent deleted successfully",
-      Restaurent,
+      message: "Cards deleted successfully",
+      Cards,
     });
   } catch (error) {
     return res.status(500).json({
@@ -132,14 +134,14 @@ export const updateOneRestoController = async (req, res) => {
     //     message: "Not authorized, you are not superadmin",
     //   });
     // }
-    req.body.name = req.body.name.toUpperCase();
+    // req.body.name = req.body.name.toUpperCase();
     // if (req.body.name !== undefined) {
     //   const existingRestoByName = await checkExistingResto(req.body.name);
     //   if (existingRestoByName && existingRestoByName.id !== req.params.id) {
-    //     console.log("Restaurent with the new name already exists");
+    //     console.log("Cards with the new name already exists");
     //     return res.status(400).json({
     //       success: false,
-    //       message: "Restaurent with the new name already exists",
+    //       message: "Cards with the new name already exists",
     //     });
     //   }
     // }
@@ -163,10 +165,10 @@ export const updateOneRestoController = async (req, res) => {
   }
 };
 
-export const getOneRestaurentController = async (req, res) => {
+export const getOneCardsController = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await getOneRestaurentWithDetails(id);
+    const data = await getOneCardsWithDetails(id);
     if (!data) {
       return res.status(404).json({
         message: "Resto not found",

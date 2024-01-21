@@ -21,6 +21,8 @@ const options = {
     { name: "System Authontication", description: "" },
     { name: "Users", description: "Users" },
     { name: "Restaurent", description: "Restaurent" },
+    { name: "cards", description: "cards" },
+    { name: "categories", description: "categories" },
 
   ],
   paths: {
@@ -38,8 +40,8 @@ const options = {
                 $ref: "#/components/schemas/User",
               },
               example: {
-                email: "root@example.com",
-                password: "root123",
+                email: "admin@gmail.com",
+                password: "admin",
               },
             },
             required: true,
@@ -220,158 +222,158 @@ const options = {
       },
     },
 
-    "/api/v1/users/changePassword": {
-      put: {
-        tags: ["Users"],
-        summary: "change  user password",
-        description: "change  user password  for current loged in user !! ",
-        operationId: "change-passwordr",
-        requestBody: {
-          content: {
-            "application/json": {
-              schema: {
-                $ref: "#/components/schemas/User",
-              },
-              example: {
-                oldPassword: "oldp",
-                newPassword: "newp",
-                confirmPassword: "cpass",
+    // "/api/v1/users/changePassword": {
+    //   put: {
+    //     tags: ["Users"],
+    //     summary: "change  user password",
+    //     description: "change  user password  for current loged in user !! ",
+    //     operationId: "change-passwordr",
+    //     requestBody: {
+    //       content: {
+    //         "application/json": {
+    //           schema: {
+    //             $ref: "#/components/schemas/User",
+    //           },
+    //           example: {
+    //             oldPassword: "oldp",
+    //             newPassword: "newp",
+    //             confirmPassword: "cpass",
                
-              },
-            },
-          },
-        },
-        responses: {
-          200: {
-            description: "User password updated  successfully",
-          },
-          400: {
-            description: "Bad request",
-          },
-          401: {
-            description: "Unauthorized",
-          },
-          404: {
-            description: "User not found",
-          },
-          500: {
-            description: "Something went wrong",
-          },
-        },
-      },
-    },
+    //           },
+    //         },
+    //       },
+    //     },
+    //     responses: {
+    //       200: {
+    //         description: "User password updated  successfully",
+    //       },
+    //       400: {
+    //         description: "Bad request",
+    //       },
+    //       401: {
+    //         description: "Unauthorized",
+    //       },
+    //       404: {
+    //         description: "User not found",
+    //       },
+    //       500: {
+    //         description: "Something went wrong",
+    //       },
+    //     },
+    //   },
+    // },
 
 
 
-    "/api/v1/users/delete/{id}": {
-      delete: {
-        tags: ["Users"],
-        summary: "Delete a user",
-        description: "Delete a user",
-        operationId: "deleteOneUser",
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            description: "User's id",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
-        ],
-        responses: {
-          200: {
-            description: "User deleted successfully",
-          },
-          400: {
-            description: "Bad request",
-          },
-          401: {
-            description: "Unauthorized",
-          },
-          404: {
-            description: "User not found",
-          },
-          500: {
-            description: "Something went wrong",
-          },
-        },
-      },
-    },
+    // "/api/v1/users/delete/{id}": {
+    //   delete: {
+    //     tags: ["Users"],
+    //     summary: "Delete a user",
+    //     description: "Delete a user",
+    //     operationId: "deleteOneUser",
+    //     parameters: [
+    //       {
+    //         name: "id",
+    //         in: "path",
+    //         description: "User's id",
+    //         required: true,
+    //         schema: {
+    //           type: "string",
+    //         },
+    //       },
+    //     ],
+    //     responses: {
+    //       200: {
+    //         description: "User deleted successfully",
+    //       },
+    //       400: {
+    //         description: "Bad request",
+    //       },
+    //       401: {
+    //         description: "Unauthorized",
+    //       },
+    //       404: {
+    //         description: "User not found",
+    //       },
+    //       500: {
+    //         description: "Something went wrong",
+    //       },
+    //     },
+    //   },
+    // },
 
-    "/api/v1/users/activate/{id}": {
-      put: {
-        tags: ["Users"],
-        summary: "Activate a user",
-        description: "Activate a user",
-        operationId: "activateOneUser",
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            description: "User's id",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
-        ],
-        responses: {
-          200: {
-            description: "User activated successfully",
-          },
-          400: {
-            description: "Bad request",
-          },
-          401: {
-            description: "Unauthorized",
-          },
-          404: {
-            description: "User not found",
-          },
-          500: {
-            description: "Something went wrong",
-          },
-        },
-      },
-    },
-    "/api/v1/users/deactivate/{id}": {
-      put: {
-        tags: ["Users"],
-        summary: "Deactivate a user",
-        description: "Deactivate a user",
-        operationId: "deactivateOneUser",
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            description: "User's id",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
-        ],
-        responses: {
-          200: {
-            description: "User deactivated successfully",
-          },
-          400: {
-            description: "Bad request",
-          },
-          401: {
-            description: "Unauthorized",
-          },
-          404: {
-            description: "User not found",
-          },
-          500: {
-            description: "Something went wrong",
-          },
-        },
-      },
-    },
+    // "/api/v1/users/activate/{id}": {
+    //   put: {
+    //     tags: ["Users"],
+    //     summary: "Activate a user",
+    //     description: "Activate a user",
+    //     operationId: "activateOneUser",
+    //     parameters: [
+    //       {
+    //         name: "id",
+    //         in: "path",
+    //         description: "User's id",
+    //         required: true,
+    //         schema: {
+    //           type: "string",
+    //         },
+    //       },
+    //     ],
+    //     responses: {
+    //       200: {
+    //         description: "User activated successfully",
+    //       },
+    //       400: {
+    //         description: "Bad request",
+    //       },
+    //       401: {
+    //         description: "Unauthorized",
+    //       },
+    //       404: {
+    //         description: "User not found",
+    //       },
+    //       500: {
+    //         description: "Something went wrong",
+    //       },
+    //     },
+    //   },
+    // },
+    // "/api/v1/users/deactivate/{id}": {
+    //   put: {
+    //     tags: ["Users"],
+    //     summary: "Deactivate a user",
+    //     description: "Deactivate a user",
+    //     operationId: "deactivateOneUser",
+    //     parameters: [
+    //       {
+    //         name: "id",
+    //         in: "path",
+    //         description: "User's id",
+    //         required: true,
+    //         schema: {
+    //           type: "string",
+    //         },
+    //       },
+    //     ],
+    //     responses: {
+    //       200: {
+    //         description: "User deactivated successfully",
+    //       },
+    //       400: {
+    //         description: "Bad request",
+    //       },
+    //       401: {
+    //         description: "Unauthorized",
+    //       },
+    //       404: {
+    //         description: "User not found",
+    //       },
+    //       500: {
+    //         description: "Something went wrong",
+    //       },
+    //     },
+    //   },
+    // },
    
 
 
@@ -410,6 +412,549 @@ const options = {
           },
           401: {
             description: "Unauthorized",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+    "/api/v1/restaurent/": {
+      get: {
+        tags: ["Restaurent"],
+        summary: "Get a resto",
+        description: "Get a resto",
+        operationId: "getOneresto",
+    
+        responses: {
+          200: {
+            description: "User deleted successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+    
+
+    "/api/v1/restaurent/delete/{id}": {
+      delete: {
+        tags: ["Restaurent"],
+        summary: "delete a resto",
+        description: "delete a resto",
+        operationId: "deleteOneresto",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "Restaurent's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: "User deleted successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+    "/api/v1/restaurent/{id}": {
+      put: {
+        tags: ["Restaurent"],
+        summary: "Update a Restaurent",
+        description: "Update a Restaurent",
+        operationId: "updateOneRestaurent",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "Restaurent's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/Restaurent",
+              },
+              // example: {
+              //   firstname: "John",
+              //   lastname: "Doe",
+              //   email: "test@example.com",
+              //   phone: "08012345678",
+              // },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "Restaurent updated successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+    "/api/v1/Restaurent/one/{id}": {
+      get: {
+        tags: ["Restaurent"],
+        summary: "Get a Restaurent",
+        description: "Get a Restaurent",
+        operationId: "getOneRestaurent",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "Restaurent's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: "User deleted successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+
+
+
+
+
+    "/api/v1/categories/add": {
+      post: {
+        tags: ["categories"],
+        summary: "Add a restaurent",
+        description: "Add a restaurent",
+        operationId: "addrestaurent",
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/categories",
+              },
+              // example: {
+              //   name: "obina",
+              //   address: "huye/ngoma",
+              //   description: "restourent descri.......",
+               
+              // },
+            },
+            required: true,
+          },
+        },
+        responses: {
+          201: {
+            description: "User created successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+    "/api/v1/categories/": {
+      get: {
+        tags: ["categories"],
+        summary: "Get a categories",
+        description: "Get a categories",
+        operationId: "getOnecategory",
+    
+        responses: {
+          200: {
+            description: "categories deleted successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+    "/api/v1/categories/delete/{id}": {
+      delete: {
+        tags: ["categories"],
+        summary: "delete a categories",
+        description: "delete a categories",
+        operationId: "deleteOnecategories",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "Restaurent's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: "User deleted successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+    "/api/v1/categories/{id}": {
+      put: {
+        tags: ["categories"],
+        summary: "Update a categories",
+        description: "Update a categories",
+        operationId: "updateOnecategories",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "categories's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/categories",
+              },
+              // example: {
+              //   firstname: "John",
+              //   lastname: "Doe",
+              //   email: "test@example.com",
+              //   phone: "08012345678",
+              // },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "categories updated successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+    "/api/v1/categories/one/{id}": {
+      get: {
+        tags: ["categories"],
+        summary: "Get a categories",
+        description: "Get a categories",
+        operationId: "getOnecategories",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "categories's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: "categories deleted successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+
+    
+
+
+
+    
+    "/api/v1/card/": {
+      get: {
+        tags: ["cards"],
+        summary: "Get a cards",
+        description: "Get a cards",
+        operationId: "getcards",
+    
+        responses: {
+          200: {
+            description: "cards deleted successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+    "/api/v1/card/one/{id}": {
+      get: {
+        tags: ["cards"],
+        summary: "Get a cards",
+        description: "Get a cards",
+        operationId: "getOnecards",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "card's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+    
+        responses: {
+          200: {
+            description: "cards deleted successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+    "/api/v1/card/delete/{id}": {
+      delete: {
+        tags: ["cards"],
+        summary: "delete a cards",
+        description: "delete a cards",
+        operationId: "deleteOnecards",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "card's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+    
+        responses: {
+          200: {
+            description: "cards deleted successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+    "/api/v1/card/add": {
+      post: {
+        tags: ["cards"],
+        summary: "add a cards",
+        description: "add a cards",
+        operationId: "addOnecards",
+      
+        requestBody: {
+          content: {
+            "application/json": {
+           
+              example: {
+                restaurent: "1",
+                userid: "2",
+                times: "30",
+                status:"available"
+              },
+            },
+            required: true,
+          },
+        },
+    
+        responses: {
+          200: {
+            description: "cards deleted successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+
+    "/api/v1/card/{id}": {
+      put: {
+        tags: ["cards"],
+        summary: "update a cards",
+        description: "update a cards",
+        operationId: "updateOnecards",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "Restaurent's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+      
+        requestBody: {
+          content: {
+            "application/json": {
+           
+              example: {
+                restaurent: "1",
+                userid: "2",
+                times: "30",
+                status:"available"
+              },
+            },
+            required: true,
+          },
+        },
+    
+        responses: {
+          200: {
+            description: "cards deleted successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
           },
           500: {
             description: "Something went wrong",
@@ -490,6 +1035,59 @@ const options = {
           description: {
             type: "string",
             description: "restaurent's description",
+          },
+
+        },
+      },
+      Cards: {
+        type: "object",
+        properties: {
+          restaurent: {
+            type: "string",
+            description: "restaurent id",
+          },
+          category: {
+            type: "string",
+            description: "category id",
+          },
+          userid: {
+            type: "string",
+            description: "restaurent address",
+          },
+          times: {
+            type: "string",
+            description: "restaurent card times",
+          },
+          status: {
+            type: "string",
+            description: "card's status",
+          },
+
+        },
+      },
+      categories: {
+        type: "object",
+        properties: {
+
+          restaurent: {
+            type: "string",
+            description: "restaurent id",
+          },
+          name: {
+            type: "string",
+            description: "name address",
+          },
+          description: {
+            type: "string",
+            description: "category description",
+          },
+          price: {
+            type: "string",
+            description: "card's status",
+          },
+          status: {
+            type: "string",
+            description: "card's status",
           },
 
         },

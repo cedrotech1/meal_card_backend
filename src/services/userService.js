@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import db from "../database/models/index.js";
 const users = db["Users"];
-const campusModel = db["Campus"];
+// const campusModel = db["Campus"];
 
 export const createUser = async (user) => {
   // hashing password

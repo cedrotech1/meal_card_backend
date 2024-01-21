@@ -2,27 +2,32 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Restaurents', {
+    await queryInterface.createTable('Categories', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      restaurent: { // Corrected typo in 'restaurant'
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       name: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
-      address: {  // Fix typo here
+      description: {
+        type: Sequelize.STRING,
+      },
+      price: {
+        type: Sequelize.STRING,
+      },
+      status: {
+        type: Sequelize.STRING, // Corrected from DataTypes.STRING
         allowNull: false,
-        type: Sequelize.STRING
       },
-      description: {
-        type: Sequelize.STRING
-      },
-      description: {
-        type: Sequelize.STRING
-      },
+      
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -34,6 +39,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Restaurents');
+    await queryInterface.dropTable('Categories');
   }
 };

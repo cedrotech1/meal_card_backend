@@ -4,10 +4,20 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Restaurent extends Model {
     static associate(models) {
-      // Restaurent.hasMany(models.Users, {
-      //   foreignKey: "restaurent",
-        
-      // });
+
+      Restaurent.hasMany(models.Users, {
+        foreignKey: "restaurents",
+        as: "restuser",
+      });
+
+
+      Restaurent.hasMany(models.Cards, { foreignKey: "restaurent", as: "restaurantCards" });
+      Restaurent.hasMany(models.Categories, { foreignKey: "restaurent", as: "restaurantCategories" });
+
+
+
+
+
     }
   }
 
@@ -24,10 +34,13 @@ module.exports = (sequelize, DataTypes) => {
       description: {
         type: DataTypes.STRING,
       },
+      description: {
+        type: DataTypes.STRING,
+      },
     },
     {
       sequelize,
-      modelName: "Restaurent",
+      modelName: "Restaurents",
 
     }
   );

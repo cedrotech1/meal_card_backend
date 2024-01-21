@@ -38,8 +38,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      restaurent: {
-
+      restaurents: {
         type: Sequelize.STRING,
         allowNull: true,
       },

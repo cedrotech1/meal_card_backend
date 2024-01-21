@@ -1,19 +1,23 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert("Restaurents", [
+    return queryInterface.bulkInsert("Cards", [
       {
-        name: "Kiza",
-        address: "huye/ngoma",
-        description: "restoura for student",
+        restaurent: "1",
+        category: "1",
+        userid: "1",
+        times: "30",
+        status: "active",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
 
       {
-        name: "umucyo",
-        address: "huye/tumba",
-        description: "restoura for all",
+        restaurent: "1",
+        category: "1",
+        userid: "2",
+        times: "30",
+        status: "active",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -23,6 +27,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete("Restaurents", null, {});
+    return queryInterface.bulkDelete("Cards", null, {});
   },
 };

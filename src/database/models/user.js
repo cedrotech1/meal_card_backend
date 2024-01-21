@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.belongsTo(models.Restaurent, { foreignKey: "restaurent", as: "campusInfo" });
+      User.belongsTo(models.Restaurents, { foreignKey: "restaurents", as: "restuser" });
     }
   }
   User.init(
@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       phone: DataTypes.STRING,
       role: DataTypes.ENUM("customer", "superadmin", "restaurentadmin", "employees"),
-      restaurent: DataTypes.STRING,
+      restaurents: DataTypes.STRING,
       status: DataTypes.STRING,
       password: DataTypes.STRING,
     },

@@ -2,27 +2,36 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Restaurents', {
+    await queryInterface.createTable('Cards', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      restaurent: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      address: {  // Fix typo here
+      category: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      description: {
+      userid: {  // Fix typo here
+        allowNull: false,
         type: Sequelize.STRING
       },
-      description: {
+      times: {  // Fix typo here
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      status: {  // Fix typo here
+        allowNull: false,
         type: Sequelize.STRING
       },
+    
+    
+    
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -34,6 +43,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Restaurents');
+    await queryInterface.dropTable('Cards');
   }
 };

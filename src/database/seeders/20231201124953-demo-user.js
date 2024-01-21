@@ -15,7 +15,7 @@ module.exports = {
       {
         firstname: "Root",
         lastname: "User",
-        email: "root@example.com",
+        email: "admin@gmail.com",
         phone: "1234567890",
         role: "superadmin",
         status: "active",
