@@ -48,6 +48,7 @@ export const login = async (req, res) => {
       phone: user.phone,
       role: user.role,
       status: user.status,
+      restaurents: user.restaurents,
     },
   });
 };

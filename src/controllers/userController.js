@@ -9,10 +9,9 @@ import {
   deleteUser,
   activateUser,
   deactivateUser,
-  // getUsersByCampus,
+  createUserCustomer,
   GetUserPassword
 } from "../services/userService";
-// import { checkprivileges, checkPrivilegeValidity } from "../helpers/privileges";
 
 export const changePassword = async (req, res) => {
   console.log(req.user.id)
@@ -78,24 +77,110 @@ export const changePassword = async (req, res) => {
   }
 };
 
+export const addCustomer = async (req, res) => {
+  try {
+    if (!req.body.role || req.body.role === "") {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide role",
+      });
+    }
 
+    if (!req.body.firstname || req.body.firstname === "") {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide firstname",
+      });
+    }
+    if (!req.body.lastname || req.body.lastname === "") {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide lastname",
+      });
+    }
+    if (!req.body.email || req.body.email === "") {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide email",
+      });
+    }
+    if (!req.body.phone || req.body.phone === "") {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide phone",
+      });
+    }
+    // Other validation checks for firstname, lastname, email, phone...
+
+    if (!(req.body.role === "customer" || req.body.role === "restaurentadmin")) {
+      return res.status(400).json({
+        success: false,
+        message: "Only customers and restaurant admins can sign up",
+      });
+    }
+
+    const userExist = await getUserByEmail(req.body.email);
+    if (userExist) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already exists",
+      });
+    }
+
+    // Generate password
+    const password = `D${Math.random().toString(36).slice(-8)}`;
+
+    // Create user with generated password and set status to active
+    req.body.password = password;
+    
+    if (req.body.role === "restaurentadmin") {
+      req.body.status = "pending";
+    } else {
+      req.body.status = "active";
+    }
+    
+
+    const newUser = await createUser(req.body);
+    newUser.password = password;
+
+    // Send email
+    await new Email(newUser).sendAccountAdded();
+
+    return res.status(201).json({
+      success: true,
+      message: "User created successfully",
+      user: {
+        id: newUser.id,
+        firstname: newUser.firstname,
+        lastname: newUser.lastname,
+        email: newUser.email,
+        role: newUser.role,
+        restaurents: newUser.restaurents,
+        role: req.body.role, // Corrected this line
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Something went wrong",
+      error,
+    });
+  }
+};
 
 
 export const addUser = async (req, res) => {
+  // userid, group () array, start time end time ,
+  let role = req.user.role;
+  // req.body.role
+  // req.body.role
+
   if (!req.body.role || req.body.role === "") {
     return res.status(400).json({
       success: false,
       message: "Please provide role",
     });
   }
-
-  if ( req.user.role !== "superadmin") {
-    return res.status(401).json({
-      success: false,
-      message: "only root allowed to add user this role",
-    });
-  }
-
 
   if (!req.body.firstname || req.body.firstname === "") {
     return res.status(400).json({
@@ -121,6 +206,41 @@ export const addUser = async (req, res) => {
       message: "Please provide phone",
     });
   }
+  if (role === "employee") {
+    if (!(req.body.role === "customer")) {
+      return res.status(400).json({
+        success: false,
+        message: "you are not allowed to ! except customer ",
+      });
+    }
+  }
+  if (role === "superadmin") {
+    return res.status(400).json({
+      success: false,
+      message: "you are not allowed to add any user",
+    });
+  }
+
+  if (role === "restaurentadmin") {
+    if (req.body.role === "superadmin" || req.body.role === "restaurentadmin") {
+      return res.status(400).json({
+        success: false,
+        message: "you are not allowed to add superadmin or restaurentadmin ",
+      });
+    }
+
+    if (role === "restaurentadmin") {
+      if (!(req.body.role === "employee" || req.body.role === "customer")) {
+        return res.status(400).json({
+          success: false,
+          message: "you are not allowed to except employees and customer ",
+        });
+      }
+    }
+
+  
+  }
+
   try {
     const userExist = await getUserByEmail(req.body.email);
     if (userExist) {
@@ -129,6 +249,7 @@ export const addUser = async (req, res) => {
         message: "email already exist",
       });
     }
+
     // generate password
     const password = `D${Math.random().toString(36).slice(-8)}`;
 
@@ -150,7 +271,9 @@ export const addUser = async (req, res) => {
         firstname: newUser.firstname,
         lastname: newUser.lastname,
         email: newUser.email,
-        // privileges: newUser.privileges,
+        role: newUser.role,
+        restaurents: newUser.restaurents,
+        rolex: role,
       },
     });
   } catch (error) {
@@ -161,6 +284,7 @@ export const addUser = async (req, res) => {
     });
   }
 };
+
 
 export const getAllUsers = async (req, res) => {
   try {

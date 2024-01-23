@@ -5,16 +5,17 @@ module.exports = (sequelize, DataTypes) => {
   class Categories extends Model {
     static associate(models) {
 
-      Categories.belongsTo(models.Restaurents, { foreignKey: "restaurent", as: "categoryRestaurant" });
+      Categories.belongsTo(models.Restaurents, { foreignKey: "restaurent" ,as:"resto" });
+      Categories.hasMany(models.Cards, { foreignKey: "category", as:"cards" });
 
-
+      // cardcategory
     }
   }
 
   Categories.init(
     {
       restaurent: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       name: {

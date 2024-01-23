@@ -81,10 +81,53 @@ const options = {
                 lastname: "Doe",
                 email: "test@example.com",
                 phone: "08012345678",
-                role: "ex:[user,systemcampusadmin,superadmin]",
-                campus: "1",
-                college: "1",
-                privileges: ["manage-users", "manage-classes"],
+                role: "ex:[customer,employee,restaurentadmin,superadmin]",
+                restaurents: "1",
+                status: "active",
+             
+              },
+            },
+            required: true,
+          },
+        },
+        responses: {
+          201: {
+            description: "User created successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+
+    "/api/v1/users/signup": {
+      post: {
+        tags: ["Users"],
+        summary: "Add a customer/restaurent admin",
+        description: "Add a user",
+        operationId: "addcustomerorrestadmin",
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/User",
+              },
+              example: {
+                firstname: "John",
+                lastname: "Doe",
+                email: "test@example.com",
+                phone: "08012345678",
+                role: "ex:[customer,employee,restaurentadmin,superadmin]",
+                // restaurents: "1",
+                status: "active",
+             
               },
             },
             required: true,
@@ -222,158 +265,158 @@ const options = {
       },
     },
 
-    // "/api/v1/users/changePassword": {
-    //   put: {
-    //     tags: ["Users"],
-    //     summary: "change  user password",
-    //     description: "change  user password  for current loged in user !! ",
-    //     operationId: "change-passwordr",
-    //     requestBody: {
-    //       content: {
-    //         "application/json": {
-    //           schema: {
-    //             $ref: "#/components/schemas/User",
-    //           },
-    //           example: {
-    //             oldPassword: "oldp",
-    //             newPassword: "newp",
-    //             confirmPassword: "cpass",
+    "/api/v1/users/changePassword": {
+      put: {
+        tags: ["Users"],
+        summary: "change  user password",
+        description: "change  user password  for current loged in user !! ",
+        operationId: "change-passwordr",
+        requestBody: {
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/User",
+              },
+              example: {
+                oldPassword: "oldp",
+                newPassword: "newp",
+                confirmPassword: "cpass",
                
-    //           },
-    //         },
-    //       },
-    //     },
-    //     responses: {
-    //       200: {
-    //         description: "User password updated  successfully",
-    //       },
-    //       400: {
-    //         description: "Bad request",
-    //       },
-    //       401: {
-    //         description: "Unauthorized",
-    //       },
-    //       404: {
-    //         description: "User not found",
-    //       },
-    //       500: {
-    //         description: "Something went wrong",
-    //       },
-    //     },
-    //   },
-    // },
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "User password updated  successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
 
 
 
-    // "/api/v1/users/delete/{id}": {
-    //   delete: {
-    //     tags: ["Users"],
-    //     summary: "Delete a user",
-    //     description: "Delete a user",
-    //     operationId: "deleteOneUser",
-    //     parameters: [
-    //       {
-    //         name: "id",
-    //         in: "path",
-    //         description: "User's id",
-    //         required: true,
-    //         schema: {
-    //           type: "string",
-    //         },
-    //       },
-    //     ],
-    //     responses: {
-    //       200: {
-    //         description: "User deleted successfully",
-    //       },
-    //       400: {
-    //         description: "Bad request",
-    //       },
-    //       401: {
-    //         description: "Unauthorized",
-    //       },
-    //       404: {
-    //         description: "User not found",
-    //       },
-    //       500: {
-    //         description: "Something went wrong",
-    //       },
-    //     },
-    //   },
-    // },
+    "/api/v1/users/delete/{id}": {
+      delete: {
+        tags: ["Users"],
+        summary: "Delete a user",
+        description: "Delete a user",
+        operationId: "deleteOneUser",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "User's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: "User deleted successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
 
-    // "/api/v1/users/activate/{id}": {
-    //   put: {
-    //     tags: ["Users"],
-    //     summary: "Activate a user",
-    //     description: "Activate a user",
-    //     operationId: "activateOneUser",
-    //     parameters: [
-    //       {
-    //         name: "id",
-    //         in: "path",
-    //         description: "User's id",
-    //         required: true,
-    //         schema: {
-    //           type: "string",
-    //         },
-    //       },
-    //     ],
-    //     responses: {
-    //       200: {
-    //         description: "User activated successfully",
-    //       },
-    //       400: {
-    //         description: "Bad request",
-    //       },
-    //       401: {
-    //         description: "Unauthorized",
-    //       },
-    //       404: {
-    //         description: "User not found",
-    //       },
-    //       500: {
-    //         description: "Something went wrong",
-    //       },
-    //     },
-    //   },
-    // },
-    // "/api/v1/users/deactivate/{id}": {
-    //   put: {
-    //     tags: ["Users"],
-    //     summary: "Deactivate a user",
-    //     description: "Deactivate a user",
-    //     operationId: "deactivateOneUser",
-    //     parameters: [
-    //       {
-    //         name: "id",
-    //         in: "path",
-    //         description: "User's id",
-    //         required: true,
-    //         schema: {
-    //           type: "string",
-    //         },
-    //       },
-    //     ],
-    //     responses: {
-    //       200: {
-    //         description: "User deactivated successfully",
-    //       },
-    //       400: {
-    //         description: "Bad request",
-    //       },
-    //       401: {
-    //         description: "Unauthorized",
-    //       },
-    //       404: {
-    //         description: "User not found",
-    //       },
-    //       500: {
-    //         description: "Something went wrong",
-    //       },
-    //     },
-    //   },
-    // },
+    "/api/v1/users/activate/{id}": {
+      put: {
+        tags: ["Users"],
+        summary: "Activate a user",
+        description: "Activate a user",
+        operationId: "activateOneUser",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "User's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: "User activated successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+    "/api/v1/users/deactivate/{id}": {
+      put: {
+        tags: ["Users"],
+        summary: "Deactivate a user",
+        description: "Deactivate a user",
+        operationId: "deactivateOneUser",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "User's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: "User deactivated successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
    
 
 
@@ -445,8 +488,6 @@ const options = {
         },
       },
     },
-    
-
     "/api/v1/restaurent/delete/{id}": {
       delete: {
         tags: ["Restaurent"],
@@ -570,6 +611,81 @@ const options = {
         },
       },
     },
+    "/api/v1/restaurent/activate/{id}": {
+      put: {
+        tags: ["Restaurent"],
+        summary: "activate a Restaurent",
+        description: "activate a Restaurent",
+        operationId: "activateOneRestaurent",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "Restaurent's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+
+        responses: {
+          200: {
+            description: "Restaurent activated successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+    "/api/v1/restaurent/disactivate/{id}": {
+      put: {
+        tags: ["Restaurent"],
+        summary: "disactivate a Restaurent",
+        description: "disactivate a Restaurent",
+        operationId: "disactivateOneRestaurent",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "Restaurent's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+
+        responses: {
+          200: {
+            description: "Restaurent disactivated successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+
 
 
 
@@ -880,10 +996,10 @@ const options = {
             "application/json": {
            
               example: {
-                restaurent: "1",
+               
                 userid: "2",
                 times: "30",
-                status:"available"
+                
               },
             },
             required: true,

@@ -5,7 +5,7 @@ const imageUploader = async (req) => {
     const tmp = req.files.image.tempFilePath;
     const Result = await uploader.upload(
       tmp,
-      { folder: "UR" },
+      { folder: "foldername" },
       (_, result) => result
     );
     return Result;

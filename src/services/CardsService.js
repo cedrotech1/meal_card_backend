@@ -1,5 +1,10 @@
 import db from "../database/models/index.js";
 const CardsModel = db["Cards"];
+const RestaurentModel = db["Restaurents"];
+const CategoryModel = db["Categories"];
+const users = db["Users"];
+
+
 
 
 export const createCards = async (CardsData) => {
@@ -18,9 +23,43 @@ export const checkExistingCards = async (name) => {
   });
 };
 
+
+
 export const getAllCardses = async () => {
-  return await CardsModel.findAll();
+  try {
+    const cards = await CardsModel.findAll({
+      include: [
+        {
+          model: users,
+          as: "cardUser",
+          where: { role: "customer" },
+          attributes: ["id", "firstname", "lastname", "email", "phone"],
+          required: false, 
+        },
+        {
+          model: CategoryModel,
+          as: "categories",
+          include: [
+            {
+              model: RestaurentModel,
+              as: "resto",
+            },
+          
+          ],
+         
+        },
+     
+       
+      ],
+    });
+
+    return cards;
+  } catch (error) {
+    console.error("Error fetching all cards with categories:", error);
+    throw error;
+  }
 };
+
 
 export const deleteOneCards = async (id) => {
   const restToDelete = await CardsModel.findOne({ where: { id } });
@@ -43,10 +82,29 @@ export const updateOneResto = async (id, resto) => {
 
 export const getOneCardsWithDetails = async (id) => {
   try {
-    return await CardsModel.findOne({
-      where: {
-        id,
-      },
+    return await CardsModel.findByPk(id,{
+      include: [
+        {
+          model: CategoryModel,
+          as: "categories",
+          include: [
+            {
+              model: RestaurentModel,
+              as: "resto",
+            },
+          
+          ],
+         
+        },
+     
+        {
+          model: users,
+          as: "cardUser",
+          where: { role: "customer" },
+          attributes: ["id", "firstname", "lastname", "email", "phone"],
+          required: false, 
+        },
+      ],
     });
   } catch (error) {
     console.error("Error fetching campus details:", error);

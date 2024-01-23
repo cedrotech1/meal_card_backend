@@ -1,5 +1,8 @@
 import db from "../database/models/index.js";
 const CategoryModel = db["Categories"];
+const RestaurentModel = db["Restaurents"];
+const users = db["Users"];
+
 
 export const createCategory = async (categoryData) => {
   try {
@@ -17,8 +20,76 @@ export const checkExistingCategory = async (name) => {
   });
 };
 
+export const getAllCardses = async () => {
+  try {
+    const cards = await CardsModel.findAll({
+      include: [
+        {
+          model: CategoryModel,
+          as: "categories",
+          include: [
+            {
+              model: RestaurentModel,
+              as: "resto",
+            },
+
+          ],
+
+        },
+
+        {
+          model: users,
+          as: "cardUser",
+          where: { role: "customer" },
+          attributes: ["id", "firstname", "lastname", "email", "phone"],
+          required: false,
+        },
+      ],
+    });
+
+    return cards;
+  } catch (error) {
+    console.error("Error fetching all cards with categories:", error);
+    throw error;
+  }
+};
+
+
 export const getAllCategories = async () => {
-  return await CategoryModel.findAll();
+  try {
+    const cards = await CategoryModel.findAll({
+      include: [
+
+        {
+          model: RestaurentModel,
+          as: "resto",
+          include: [
+            {
+              model: users,
+              as: "restaurentadmin",
+              where: { role: "restaurentadmin" },
+              attributes: ["id", "firstname", "lastname", "email", "phone"],
+              required: false,
+            },
+          
+            {
+              model: users,
+              as: "employee",
+              where: { role: "employee" },
+              attributes: ["id", "firstname", "lastname", "email", "phone","role"],
+              required: false,
+            },
+
+          ],
+        },
+      ],
+    });
+
+    return cards;
+  } catch (error) {
+    console.error("Error fetching all cards with categories:", error);
+    throw error;
+  }
 };
 
 export const deleteOneCategory = async (id) => {
@@ -41,13 +112,37 @@ export const updateOneCategory = async (id, category) => {
 
 export const getOneCategoryWithDetails = async (id) => {
   try {
-    return await CategoryModel.findOne({
-      where: {
-        id,
-      },
+    const cards = await CategoryModel.findByPk(id,{
+      include: [
+
+        {
+          model: RestaurentModel,
+          as: "resto",
+          include: [
+            {
+              model: users,
+              as: "restaurentadmin",
+              where: { role: "restaurentadmin" },
+              attributes: ["id", "firstname", "lastname", "email", "phone"],
+              required: false,
+            },
+          
+            {
+              model: users,
+              as: "employee",
+              where: { role: "employee" },
+              attributes: ["id", "firstname", "lastname", "email", "phone","role"],
+              required: false,
+            },
+
+          ],
+        },
+      ],
     });
+
+    return cards;
   } catch (error) {
-    console.error("Error fetching category details:", error);
-    throw error; // You may want to handle the error more appropriately in your application
+    console.error("Error fetching all cards with categories:", error);
+    throw error;
   }
 };

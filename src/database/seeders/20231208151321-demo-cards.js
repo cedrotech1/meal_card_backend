@@ -3,9 +3,9 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert("Cards", [
       {
-        restaurent: "1",
+        
         category: "1",
-        userid: "1",
+        userid: "5",
         times: "30",
         status: "active",
         createdAt: new Date(),
@@ -13,9 +13,9 @@ module.exports = {
       },
 
       {
-        restaurent: "1",
-        category: "1",
-        userid: "2",
+     
+        category: "2",
+        userid: "6",
         times: "30",
         status: "active",
         createdAt: new Date(),

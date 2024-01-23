@@ -7,9 +7,8 @@ module.exports = (sequelize, DataTypes) => {
      
       
 
-  Cards.belongsTo(models.Restaurents, { foreignKey: "restaurent", as: "cardRestaurant" });
   Cards.belongsTo(models.Users, { foreignKey: "userid", as: "cardUser" });
-
+  Cards.belongsTo(models.Categories, { foreignKey: "category", as: "categories" });
 
 
     }
@@ -17,17 +16,14 @@ module.exports = (sequelize, DataTypes) => {
 
   Cards.init(
     {
-      restaurent: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+
       category: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       
       userid: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       times: {

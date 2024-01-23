@@ -7,12 +7,28 @@ module.exports = (sequelize, DataTypes) => {
 
       Restaurent.hasMany(models.Users, {
         foreignKey: "restaurents",
-        as: "restuser",
+        as: "restaurentadmin",
+      });
+
+      Restaurent.hasMany(models.Users, {
+        foreignKey: "restaurents",
+        as: "customer",
+      });
+
+      
+      Restaurent.hasMany(models.Users, {
+        foreignKey: "restaurents",
+        as: "employee",
       });
 
 
-      Restaurent.hasMany(models.Cards, { foreignKey: "restaurent", as: "restaurantCards" });
-      Restaurent.hasMany(models.Categories, { foreignKey: "restaurent", as: "restaurantCategories" });
+
+      Restaurent.hasMany(models.Categories, { foreignKey: "restaurent", as:'restaurantCategories' });
+
+      Restaurent.hasMany(models.Users, {
+        foreignKey: "restaurents",
+        as: "restusers",
+      });
 
 
 
@@ -35,6 +51,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       description: {
+        type: DataTypes.STRING,
+      },
+      status: {
         type: DataTypes.STRING,
       },
     },

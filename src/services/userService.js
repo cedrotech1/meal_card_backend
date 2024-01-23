@@ -1,9 +1,41 @@
 import bcrypt from "bcryptjs";
 import db from "../database/models/index.js";
 const users = db["Users"];
-// const campusModel = db["Campus"];
+const RestaurentModel = db["Restaurents"];
 
+
+export const updateUserWithRestaurant = async (userId, restaurantId) => {
+  try {
+    const userToUpdate = await users.findOne({
+      where: { id: userId },
+      attributes: { exclude: ["password"] },
+    });
+
+    if (userToUpdate) {
+      await userToUpdate.update({ restaurents: restaurantId });
+      const updatedUser = await users.findByPk(userId, {
+        attributes: { exclude: ["password"] },
+      });
+
+      return updatedUser;
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error updating user with restaurant:", error);
+    throw error;
+  }
+};
 export const createUser = async (user) => {
+  // hashing password
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(user.password, salt);
+  const newUser = await users.create(user);
+  return newUser;
+};
+
+
+export const createUserCustomer = async (user) => {
   // hashing password
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
@@ -29,12 +61,12 @@ export const getUserByEmail = async (email) => {
   try {
     const user = await users.findOne({
       where: { email },
-      // include: [
-      //   {
-      //     model: campusModel,
-      //     as: "campusInfo", // Assuming this is the alias used for the Campus association
-      //   },
-      // ],
+      include: [
+        {
+          model: RestaurentModel,
+          as: "restusers", // Assuming this is the alias used for the Campus association
+        },
+      ],
     });
 
     return user;

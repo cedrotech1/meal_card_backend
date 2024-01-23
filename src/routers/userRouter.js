@@ -7,7 +7,7 @@ import {
   updateOneUser,
   activateOneUser,
   deactivateOneUser,
-  updateUserPrivileges,
+  addCustomer,
   changePassword
 } from '../controllers/userController';
 import { protect } from '../middlewares/protect';
@@ -23,5 +23,6 @@ router.put('/activate/:id', protect, activateOneUser);
 router.put('/deactivate/:id', protect, deactivateOneUser);
 // router.patch('/updateUserPrivileges/:id', protect, updateUserPrivileges);
 router.put('/changePassword', protect, changePassword);
+router.post('/signup', addCustomer);
 
 export default router;

@@ -20,7 +20,7 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-      description: {
+      status: {
         type: Sequelize.STRING
       },
       createdAt: {

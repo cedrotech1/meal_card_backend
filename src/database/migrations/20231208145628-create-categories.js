@@ -11,7 +11,7 @@ module.exports = {
       },
       restaurent: { // Corrected typo in 'restaurant'
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
       },
       name: {
         allowNull: false,

@@ -13,6 +13,25 @@ import {
 } from "../services/CardsService";
 
 export const addCardsController = async (req, res) => {
+  let role = req.user.role;
+
+  if (!role === "employee") {
+      return res.status(400).json({
+        success: false,
+        message: "you are not allowed to add card for customers ",
+      });
+    
+  }
+
+  if (!role === "employee") {
+    return res.status(400).json({
+      success: false,
+      message: "you are not allowed to add card for customers ",
+    });
+  
+}
+
+  
   try {
     // if (req.user.role !== "superadmin") {
     //   return res.status(401).json({
@@ -38,6 +57,8 @@ export const addCardsController = async (req, res) => {
     //     message: "Cards with the same name already exists ",
     //   });
     // }
+    
+    
 
     const newCards = await createCards(req.body);
     return res.status(201).json({

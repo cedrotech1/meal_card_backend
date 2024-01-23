@@ -1,21 +1,26 @@
 // RestaurentController.js
 import {
-  RestaurentWithAll,
-  // getAllRestaurentes,
   createRestaurent,
   getAllRestaurentes,
   deleteOneRestaurent,
   checkExistingRestaurent,
   getOneRestaurentWithDetails,
-  updateOneResto
+  updateOneResto,
+  activateResto,
+  deactivateResto
+
 } from "../services/restaurentService";
+
+import {
+  updateUserWithRestaurant
+} from "../services/userService";
 
 export const addRestaurentController = async (req, res) => {
   try {
-    if (req.user.role !== "superadmin") {
+    if (req.user.role !== "restaurentadmin") {
       return res.status(401).json({
         success: false,
-        message: "Not authorized, you are not superadmin",
+        message: "Not authorized, you are not a restaurant admin",
       });
     }
 
@@ -28,20 +33,25 @@ export const addRestaurentController = async (req, res) => {
       });
     }
 
-    const existingRestaurent = await checkExistingRestaurent(req.body.name);
-    if (existingRestaurent) {
-      console.log("Restaurent with the same name already exists ");
+    const existingRestaurant = await checkExistingRestaurent(req.body.name);
+    if (existingRestaurant) {
       return res.status(400).json({
         success: false,
-        message: "Restaurent with the same name already exists ",
+        message: "Restaurant with the same name already exists",
       });
     }
+    req.body.status = "pending";
+    const newRestaurant = await createRestaurent(req.body);
 
-    const newRestaurent = await createRestaurent(req.body);
+    // Assuming req.user is the authenticated user
+    // Update the user with the new restaurant information
+    const updatedUser = await updateUserWithRestaurant(req.user.id, newRestaurant.id);
+
     return res.status(201).json({
       success: true,
-      message: "Restaurent created successfully",
-      Restaurent: newRestaurent,
+      message: "Restaurant created successfully",
+      restaurant: newRestaurant,
+      user: updatedUser,
     });
   } catch (error) {
     console.error(error);
@@ -52,6 +62,7 @@ export const addRestaurentController = async (req, res) => {
     });
   }
 };
+
 
 export const RestaurentWithAllController = async (req, res) => {
   try {
@@ -95,12 +106,12 @@ export const getAllRestaurentesController = async (req, res) => {
 
 export const deleteOneRestaurentController = async (req, res) => {
   try {
-    // if (req.user.role !== "superadmin") {
-    //   return res.status(401).json({
-    //     success: false,
-    //     message: "Not authorized, you are not superadmin",
-    //   });
-    // }
+    if (req.user.role !== "restaurentadmin") {
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized, you are not a restaurant admin",
+      });
+    }
 
     const Restaurent = await deleteOneRestaurent(req.params.id);
     if (!Restaurent) {
@@ -176,6 +187,68 @@ export const getOneRestaurentController = async (req, res) => {
       success: true,
       message: "Resto retrieved successfully",
       data,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong",
+      error,
+    });
+  }
+};
+
+
+
+export const activateRestaurentController = async (req, res) => {
+  try {
+    if (req.user.role !== "superadmin") {
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized, you are not a superadmin",
+      });
+    }
+
+    const restaurant = await activateResto(req.params.id);
+    if (!restaurant) {
+      return res.status(404).json({
+        success: false,
+        message: "Restaurant not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Restaurant activated successfully",
+      restaurant,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong",
+      error,
+    });
+  }
+};
+
+export const deactivateRestaurentController = async (req, res) => {
+  try {
+    if (req.user.role !== "superadmin") {
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized, you are not a superadmin",
+      });
+    }
+
+    const restaurant = await deactivateResto(req.params.id);
+    if (!restaurant) {
+      return res.status(404).json({
+        success: false,
+        message: "Restaurant not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Restaurant deactivated successfully",
+      restaurant,
     });
   } catch (error) {
     return res.status(500).json({

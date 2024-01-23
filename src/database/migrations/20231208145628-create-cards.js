@@ -9,17 +9,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      restaurent: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
+
       category: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       userid: {  // Fix typo here
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       times: {  // Fix typo here
         allowNull: false,
