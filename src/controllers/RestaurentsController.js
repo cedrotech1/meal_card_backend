@@ -136,24 +136,15 @@ export const deleteOneRestaurentController = async (req, res) => {
 
 
 export const updateOneRestoController = async (req, res) => {
+  
+  if (req.user.role !== "restaurentadmin") {
+    return res.status(401).json({
+      success: false,
+      message: "Not authorized, you are not a restaurant admin",
+    });
+  }
   try {
-    // if (req.user.role !== "superadmin") {
-    //   return res.status(401).json({
-    //     success: false,
-    //     message: "Not authorized, you are not superadmin",
-    //   });
-    // }
-    req.body.name = req.body.name.toUpperCase();
-    // if (req.body.name !== undefined) {
-    //   const existingRestoByName = await checkExistingResto(req.body.name);
-    //   if (existingRestoByName && existingRestoByName.id !== req.params.id) {
-    //     console.log("Restaurent with the new name already exists");
-    //     return res.status(400).json({
-    //       success: false,
-    //       message: "Restaurent with the new name already exists",
-    //     });
-    //   }
-    // }
+
     const updatedResto = await updateOneResto(req.params.id, req.body);
     if (!updatedResto) {
       return res.status(404).json({

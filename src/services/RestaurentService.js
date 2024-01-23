@@ -161,7 +161,7 @@ export const activateResto = async (id) => {
   const restoToUpdate = await RestaurentModel.findOne({ where: { id } });
   if (restoToUpdate) {
     await RestaurentModel.update({ status: 'active' }, { where: { id } });
-    return restoToUpdate; 
+    return restoToUpdate;
   }
   return null;
 };
@@ -169,10 +169,9 @@ export const activateResto = async (id) => {
 export const deactivateResto = async (id) => {
   const restoToUpdate = await RestaurentModel.findOne({ where: { id } });
   if (restoToUpdate) {
-    await RestaurentModel.update({ status: 'inactive' }, { where: { id } }); 
-    return restoToUpdate; 
+    await RestaurentModel.update({ status: 'inactive' }, { where: { id } });
+    return restoToUpdate;
   }
   return null;
 };
-
 
