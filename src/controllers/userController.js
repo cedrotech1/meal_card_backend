@@ -9,8 +9,9 @@ import {
   deleteUser,
   activateUser,
   deactivateUser,
-  createUserCustomer,
-  GetUserPassword
+  GetUserPassword,
+  getallUsers,
+  getUserByPhone
 } from "../services/userService";
 
 export const changePassword = async (req, res) => {
@@ -79,38 +80,51 @@ export const changePassword = async (req, res) => {
 
 export const addCustomer = async (req, res) => {
   try {
-    if (!req.body.role || req.body.role === "") {
+    if (!req.body.role || req.body.role === "" || !req.body.firstname || req.body.firstname === "" || !req.body.lastname || req.body.lastname === "" ||  !req.body.email || req.body.email === "" || !req.body.phone || req.body.phone === ""
+    || !req.body.address || req.body.address === "" || !req.body.gender || req.body.gender === "") {
       return res.status(400).json({
         success: false,
-        message: "Please provide role",
+        message: "Please provide all information",
       });
     }
 
-    if (!req.body.firstname || req.body.firstname === "") {
+
+
+    const { password, confirmPassword } = req.body;
+
+    // Check if password is provided
+    if (!password || password === "") {
       return res.status(400).json({
         success: false,
-        message: "Please provide firstname",
+        message: "Please provide a password",
       });
     }
-    if (!req.body.lastname || req.body.lastname === "") {
+  
+    // Check if confirmPassword is provided
+    if (!confirmPassword || confirmPassword === "") {
       return res.status(400).json({
         success: false,
-        message: "Please provide lastname",
+        message: "Please provide a confirmation password",
       });
     }
-    if (!req.body.email || req.body.email === "") {
+  
+    // Compare password and confirmPassword
+    if (password !== confirmPassword) {
       return res.status(400).json({
         success: false,
-        message: "Please provide email",
+        message: "Passwords do not match",
       });
     }
-    if (!req.body.phone || req.body.phone === "") {
+  
+    // Validate if the password is strong
+    const strongPasswordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})/;
+    if (!strongPasswordRegex.test(password)) {
       return res.status(400).json({
         success: false,
-        message: "Please provide phone",
+        message: "Password must be at least 8 characters long and include a symbol and a capital letter",
       });
     }
-    // Other validation checks for firstname, lastname, email, phone...
+    // Other validation checks for firstname, lastname, email, phone... varidate if it is strong password include atleast 8 characters symbol and capital letter and display messages for errors
 
     if (!(req.body.role === "customer" || req.body.role === "restaurentadmin")) {
       return res.status(400).json({
@@ -126,12 +140,18 @@ export const addCustomer = async (req, res) => {
         message: "Email already exists",
       });
     }
+    const Exist = await getUserByPhone(req.body.phone);
+    if (Exist) {
+      return res.status(400).json({
+        success: false,
+        message: "your Phone number already exists",
+      });
+    }
+    // // Generate password
+    // const password = `D${Math.random().toString(36).slice(-8)}`;
 
-    // Generate password
-    const password = `D${Math.random().toString(36).slice(-8)}`;
-
-    // Create user with generated password and set status to active
-    req.body.password = password;
+    // // Create user with generated password and set status to active
+    // req.body.password = password;
     
     if (req.body.role === "restaurentadmin") {
       req.body.status = "pending";
@@ -249,6 +269,7 @@ export const addUser = async (req, res) => {
         message: "email already exist",
       });
     }
+    req.body.restaurents=req.user.restaurents;
 
     // generate password
     const password = `D${Math.random().toString(36).slice(-8)}`;
@@ -273,7 +294,7 @@ export const addUser = async (req, res) => {
         email: newUser.email,
         role: newUser.role,
         restaurents: newUser.restaurents,
-        rolex: role,
+        
       },
     });
   } catch (error) {
@@ -289,19 +310,25 @@ export const addUser = async (req, res) => {
 export const getAllUsers = async (req, res) => {
   try {
     let users;
-    if (req.user.role === "root") {
-      users = await getUsers();
+
+    if (req.user.role === "restaurentadmin") {
+      users = await getUsers(req.user.restaurents, req.user.id);
+    } else if (req.user.role === "superadmin" || req.user.role === "employee") {
+      users = await getallUsers();
+
+      // If the logged-in user is an employee, filter users with role "customer"
+      if (req.user.role === "employee") {
+        users = users.filter(user => user.role === "customer");
+      }
     }
-    if (req.user.role === "superadmin") {
-      users = await getUsers();
-    }
- 
+
     return res.status(200).json({
       success: true,
       message: "Users retrieved successfully",
       users,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       message: "Something went wrong",
       error,
@@ -309,8 +336,24 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
+
 export const getOneUser = async (req, res) => {
+
   try {
+
+    //  let users;
+
+    // if (req.user.role === "restaurentadmin") {
+    //   users = await getUsers(req.user.restaurents, req.user.id);
+    // } else if (req.user.role === "superadmin" || req.user.role === "employee") {
+    //   users = await getallUsers();
+
+    //   // If the logged-in user is an employee, filter users with role "customer"
+    //   if (req.user.role === "employee") {
+    //     users = users.filter(user => user.role === "customer");
+    //   }
+    // }
+    
     const user = await getUser(req.params.id);
     if (!user) {
       return res.status(404).json({
@@ -380,7 +423,19 @@ export const deleteOneUser = async (req, res) => {
 };
 
 export const activateOneUser = async (req, res) => {
+  
   try {
+
+    // let role = req.user.role;
+    // if (role === "restaurentadmin") {
+    //   if (req.body.role === "superadmin" || req.body.role === "restaurentadmin") {
+    //     return res.status(400).json({
+    //       success: false,
+    //       message: "you are not allowed to add superadmin or restaurentadmin ",
+    //     });
+    //   }}
+
+
     const existingUser = await getUser(req.params.id);
     if (!existingUser) {
       return res.status(404).json({
@@ -388,21 +443,7 @@ export const activateOneUser = async (req, res) => {
         message: "User not found",
       });
     }
-    if (existingUser.role === "superadmin" && req.user.role !== "root") {
-      return res.status(401).json({
-        success: false,
-        message: "Not authorized",
-      });
-    }
-    if (
-      existingUser.role === "systemcampusadmin" &&
-      req.user.role !== "superadmin"
-    ) {
-      return res.status(401).json({
-        success: false,
-        message: "Not authorized",
-      });
-    }
+ 
 
 
     const user = await activateUser(req.params.id);
@@ -467,3 +508,11 @@ export const deactivateOneUser = async (req, res) => {
     });
   }
 };
+
+
+
+
+
+
+
+

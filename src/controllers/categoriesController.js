@@ -5,38 +5,27 @@ import {
   deleteOneCategory,
   checkExistingCategory,
   getOneCategoryWithDetails,
-  updateOneCategory
+  updateOneCategory,
+  activatecategorys,
+  diactivatecategorys,
+  getcategory
 } from "../services/categoriesService";
 
 export const addCategoryController = async (req, res) => {
   try {
-    // if (req.user.role !== "superadmin") {
-    //   return res.status(401).json({
-    //     success: false,
-    //     message: "Not authorized, you are not superadmin",
-    //   });
-    // }
+    if (req.user.role !== "restaurentadmin") {
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized, you are not a restaurant admin",
+      });
+    }
 
-    // Convert the category name to uppercase
-    // req.body.name = req.body.name.toUpperCase();
+    req.body.restaurent=req.user.restaurents;
+    req.body.status='active';
 
-    // if (!req.body.name) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "Name is required",
-    //   });
-    // }
 
-    // const existingCategory = await checkExistingCategory(req.body.name);
-    // if (existingCategory) {
-    //   console.log("Category with the same name already exists");
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "Category with the same name already exists",
-    //   });
-    // }
-
-    // Create the category
+    // req.body.restaurent ==  req.user.restaurents
+     
     const newCategory = await createCategory(req.body);
 
     // TODO: Handle any additional logic related to Category creation
@@ -150,6 +139,91 @@ export const getOneCategoryController = async (req, res) => {
       success: true,
       message: "Category retrieved successfully",
       data,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong",
+      error,
+    });
+  }
+};
+
+export const activatecategory = async (req, res) => {
+  
+  try {
+
+    let role = req.user.role;
+    if (role !== "restaurentadmin") {
+    
+        return res.status(400).json({
+          success: false,
+          message: "you are not allowed to add superadmin or restaurentadmin ",
+        });
+      }
+
+    const existingcategory = await getcategory(req.params.id);
+    if (!existingcategory) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+ 
+
+
+    const user = await activatecategorys(req.params.id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "category not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "category activated successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong",
+      error,
+    });
+  }
+};
+
+export const diactivatecategory= async (req, res) => {
+  
+  try {
+
+    let role = req.user.role;
+    if (role !== "restaurentadmin") {
+    
+        return res.status(400).json({
+          success: false,
+          message: "you are not allowed to add superadmin or restaurentadmin ",
+        });
+      }
+
+
+    const existingUser = await getcategory(req.params.id);
+    if (!existingUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+ 
+
+
+    const user = await diactivatecategorys(req.params.id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "category not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "category disactivated successfully",
     });
   } catch (error) {
     return res.status(500).json({

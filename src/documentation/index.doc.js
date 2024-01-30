@@ -125,6 +125,8 @@ const options = {
                 email: "test@example.com",
                 phone: "08012345678",
                 role: "ex:[customer,employee,restaurentadmin,superadmin]",
+                gender: "male",
+                address: "huye/tumba",
                 // restaurents: "1",
                 status: "active",
              
@@ -878,6 +880,78 @@ const options = {
         },
       },
     },
+    "/api/v1/categories/activate/{id}": {
+      put: {
+        tags: ["categories"],
+        summary: "Activate a categories",
+        description: "Activate a categories",
+        operationId: "activatecategories",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "categories's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: "categories activated successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+    "/api/v1/categories/diactivate/{id}": {
+      put: {
+        tags: ["categories"],
+        summary: "DisActivate a categories",
+        description: "DisActivate a categories",
+        operationId: "disactivatecategories",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "categories's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: "categories disactivated successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
 
     
 
@@ -916,6 +990,44 @@ const options = {
         summary: "Get a cards",
         description: "Get a cards",
         operationId: "getOnecards",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "card's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+    
+        responses: {
+          200: {
+            description: "cards deleted successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+
+    "/api/v1/card/mycard/{id}": {
+      get: {
+        tags: ["cards"],
+        summary: "Get a cards",
+        description: "Get a cards",
+        operationId: "getOnecards1",
         parameters: [
           {
             name: "id",
@@ -1078,6 +1190,60 @@ const options = {
         },
       },
     },
+
+    "/api/v1/card/use/{id}": {
+      put: {
+        tags: ["cards"],
+        summary: "update a cards",
+        description: "update a cards",
+        operationId: "updateCard",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "card's id",
+            required: true,
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+      
+        requestBody: {
+          content: {
+            "application/json": {
+           
+              example: {
+                restaurent: "1",
+                userid: "2",
+                use: "30",
+                status:"available"
+              },
+            },
+            required: true,
+          },
+        },
+    
+        responses: {
+          200: {
+            description: "cards deleted successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
+    },
+
 
   },
 

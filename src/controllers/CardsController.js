@@ -9,6 +9,8 @@ import {
   getOneCardsWithDetails,
   // getAllCardsesWithModels,
   updateOneResto,
+  Cardsfor1x,
+  useCard
   
 } from "../services/CardsService";
 
@@ -23,13 +25,7 @@ export const addCardsController = async (req, res) => {
     
   }
 
-  if (!role === "employee") {
-    return res.status(400).json({
-      success: false,
-      message: "you are not allowed to add card for customers ",
-    });
-  
-}
+
 
   
   try {
@@ -42,12 +38,12 @@ export const addCardsController = async (req, res) => {
 
     // req.body.name = req.body.name.toUpperCase();
 
-    // if (!req.body.name) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "Name is required",
-    //   });
-    // }
+    if (!req.body.duration) {
+      return res.status(400).json({
+        success: false,
+        message: "duration is required",
+      });
+    }
 
     // const existingCards = await checkExistingCards(req.body.name);
     // if (existingCards) {
@@ -98,17 +94,48 @@ export const CardsWithAllController = async (req, res) => {
   }
 };
 
+// export const CustomerCards = async (req, res) => {
+//   try {
+//     const data = await CustomerCard(req.user.restaurents,id);
+//     if (!data) {
+//       return res.status(404).json({
+//         message: "Cards not found",
+//       });
+//     }
+//     return res.status(200).json({
+//       success: true,
+//       message: "Cards retrieved successfully",
+//       data,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({
+//       message: "Something went wrong",
+//       error,
+//     });
+//   }
+// };
 
 
-export const getAllCardsesController = async (req, res) => {
+
+export const Cardsfor1 = async (req, res) => {
+  // const { id } = req.params; req.user.restaurents,id
   try {
-    const Cardses = await getAllCardses();
+    const { id } = req.params;
+    const Cardsesa = await getAllCardses();
+    // const cardsForUserId5 = Cardses.filter(card => card.userid == id && card.categories.restaurent==req.user.restaurents );
+    const Cardses = Cardsesa.filter(card => card.userid == id );
+
+
+    console.log(req.user.restaurents)
+    console.log(id)
     return res.status(200).json({
       success: true,
       message: "Cardses retrieved successfully",
       Cardses,
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       message: "Something went wrong",
       error,
@@ -149,23 +176,6 @@ export const deleteOneCardsController = async (req, res) => {
 
 export const updateOneRestoController = async (req, res) => {
   try {
-    // if (req.user.role !== "superadmin") {
-    //   return res.status(401).json({
-    //     success: false,
-    //     message: "Not authorized, you are not superadmin",
-    //   });
-    // }
-    // req.body.name = req.body.name.toUpperCase();
-    // if (req.body.name !== undefined) {
-    //   const existingRestoByName = await checkExistingResto(req.body.name);
-    //   if (existingRestoByName && existingRestoByName.id !== req.params.id) {
-    //     console.log("Cards with the new name already exists");
-    //     return res.status(400).json({
-    //       success: false,
-    //       message: "Cards with the new name already exists",
-    //     });
-    //   }
-    // }
     const updatedResto = await updateOneResto(req.params.id, req.body);
     if (!updatedResto) {
       return res.status(404).json({
@@ -179,6 +189,48 @@ export const updateOneRestoController = async (req, res) => {
       Resto: updatedResto,
     });
   } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong",
+      error,
+    });
+  }
+};
+
+export const useCardController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const card = await getOneCardsWithDetails(id);
+    console.log(card)
+    if(card.times<req.body.use){
+      return res.status(404).json({
+        success: false,
+        message: `your card can not support ${req.body.use}  plate`,
+      });
+    }
+    req.body.times=card.times-req.body.use;
+    req.body.userid=card.userid
+    // req.body.times=card.times-req.body.used;
+    if (!card) {
+      return res.status(404).json({
+        success: false,
+        message: "Resto not found",
+      });
+    }
+
+    const updatedResto = await useCard(req.params.id, req.body);
+    if (!updatedResto) {
+      return res.status(404).json({
+        success: false,
+        message: "Resto not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Card Checked successfully",
+      Resto: updatedResto,
+    });
+  } catch (error) {
+    console.log(error)
     return res.status(500).json({
       message: "Something went wrong",
       error,

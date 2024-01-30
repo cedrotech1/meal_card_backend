@@ -4,9 +4,9 @@ module.exports = {
     return queryInterface.bulkInsert("Categories", [
       {
         restaurent: "1",
-        name: "vip",
+        name: "vvip",
         description: "category description for .......",
-        price: "vip",
+        price: "50000",
         status: "available",
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -16,7 +16,7 @@ module.exports = {
         restaurent: "2",
         name: "vip",
         description: "category description for .......",
-        price: "vip",
+        price: "40000",
         status: "available",
         createdAt: new Date(),
         updatedAt: new Date(),

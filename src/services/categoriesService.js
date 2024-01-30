@@ -146,3 +146,41 @@ export const getOneCategoryWithDetails = async (id) => {
     throw error;
   }
 };
+
+export const activatecategorys = async (id) => {
+  const categoryToActivate = await CategoryModel.findOne(
+    { where: { id } }
+ 
+  );
+  if (categoryToActivate) {
+    await CategoryModel.update({ status: "active" }, { where: { id } });
+    return categoryToActivate;
+  }
+  return null;
+};
+
+export const diactivatecategorys = async (id) => {
+  const categoryToActivate = await CategoryModel.findOne(
+    { where: { id } }
+ 
+  );
+  if (categoryToActivate) {
+    await CategoryModel.update({ status: "inactive" }, { where: { id } });
+    return categoryToActivate;
+  }
+  return null;
+};
+
+
+export const getcategory = async (id) => {
+  const allcategory = await CategoryModel.findAll({
+    where: {
+      id,
+    
+    }
+ 
+  });
+  return allcategory;
+};
+
+// activatecategory

@@ -5,6 +5,8 @@ import {
   deleteOneCardsController,
   getOneCardsController,
   updateOneRestoController,
+  Cardsfor1,
+  useCardController
   
   // CardsWithAllController,
 } from "../controllers/CardsController";
@@ -12,11 +14,12 @@ import { protect } from "../middlewares/protect";
 
 const router = express.Router();
 
-router.delete("/delete/:id",  deleteOneCardsController);
-router.post("/add/",  addCardsController);
-router.get("/", CardsWithAllController);
-router.get("/all", CardsWithAllController);
-router.get("/one/:id", getOneCardsController);
-router.put("/:id", updateOneRestoController);
+router.delete("/delete/:id",protect,  deleteOneCardsController);
+router.post("/add/",protect,  addCardsController);
+router.get("/",protect, CardsWithAllController);
+router.get("/mycard/:id",protect, Cardsfor1);
+router.get("/one/:id", protect,getOneCardsController);
+router.put("/:id", protect,updateOneRestoController);
+router.put("/use/:id", protect,useCardController);
 
 export default router;

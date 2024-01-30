@@ -160,8 +160,8 @@ export const updateOneResto = async (id, resto) => {
 export const activateResto = async (id) => {
   const restoToUpdate = await RestaurentModel.findOne({ where: { id } });
   if (restoToUpdate) {
-    await RestaurentModel.update({ status: 'active' }, { where: { id } });
-    return restoToUpdate;
+   const updatedone= await RestaurentModel.update({ status: 'active' }, { where: { id } });
+    return updatedone;
   }
   return null;
 };
