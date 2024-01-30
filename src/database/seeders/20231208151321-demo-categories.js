@@ -5,7 +5,7 @@ module.exports = {
       {
         restaurent: "1",
         name: "vvip",
-        description: "category description for .......",
+        description: "category description for category description forcategory description forcategory description forcategory description forcategory description for.......",
         price: "50000",
         status: "available",
         createdAt: new Date(),
@@ -15,7 +15,7 @@ module.exports = {
       {
         restaurent: "2",
         name: "vip",
-        description: "category description for .......",
+        description: "category description forcategory description forcategory description forcategory description forcategory description forcategory description for .......",
         price: "40000",
         status: "available",
         createdAt: new Date(),

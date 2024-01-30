@@ -3,13 +3,23 @@ const CardsModel = db["Cards"];
 const RestaurentModel = db["Restaurents"];
 const CategoryModel = db["Categories"];
 const users = db["Users"];
+const cardReports = db["cardReports"];
 
 
+// createCardsReport
 
 
 export const createCards = async (CardsData) => {
   try {
     return await CardsModel.create(CardsData);
+  } catch (error) {
+    throw new Error(`Error creating Cards: ${error.message}`);
+  }
+};
+
+export const createCardsReport = async (CardsData) => {
+  try {
+    return await cardReports.create(CardsData);
   } catch (error) {
     throw new Error(`Error creating Cards: ${error.message}`);
   }

@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Cards.belongsTo(models.Users, { foreignKey: "userid", as: "cardUser" });
   Cards.belongsTo(models.Categories, { foreignKey: "category", as: "categories" });
-
+  Cards.hasMany(models.cardReports, { foreignKey: "cardid", as: "report1" });
 
     }
   }
