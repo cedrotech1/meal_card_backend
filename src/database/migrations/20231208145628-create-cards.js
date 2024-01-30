@@ -22,6 +22,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
+      duration: {  // Fix typo here
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       status: {  // Fix typo here
         allowNull: false,
         type: Sequelize.STRING

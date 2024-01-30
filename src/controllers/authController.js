@@ -30,12 +30,12 @@ export const login = async (req, res) => {
       message: "Invalid email or password",
     });
   }
-  if (user.status !== "active") {
-    return res.status(400).json({
-      success: false,
-      message: "Your account is not active",
-    });
-  }
+  // if (user.status !== "active") {
+  //   return res.status(400).json({
+  //     success: false,
+  //     message: "Your account is not active",
+  //   });
+  // }
   return res.status(200).json({
     success: true,
     message: "User logged in successfully",

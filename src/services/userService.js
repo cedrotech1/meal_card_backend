@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import db from "../database/models/index.js";
 const users = db["Users"];
 const RestaurentModel = db["Restaurents"];
+import Sequelize from "sequelize";
 
 
 export const updateUserWithRestaurant = async (userId, restaurantId) => {
@@ -19,6 +20,7 @@ export const updateUserWithRestaurant = async (userId, restaurantId) => {
 
       return updatedUser;
     }
+    
 
     return null;
   } catch (error) {
@@ -33,6 +35,7 @@ export const createUser = async (user) => {
   const newUser = await users.create(user);
   return newUser;
 };
+
 
 
 export const createUserCustomer = async (user) => {
@@ -77,9 +80,39 @@ export const getUserByEmail = async (email) => {
   }
 };
 
-export const getUsers = async () => {
+
+export const getUserByPhone = async (phone) => {
+  try {
+    const user = await users.findOne({
+      where: { phone }
+
+    });
+
+    return user;
+  } catch (error) {
+    // Handle errors here
+    console.error("Error fetching user:", error);
+    throw error;
+  }
+};
+
+export const getUsers = async (restaurents, id) => {
   const allUsers = await users.findAll({
-    // where: { role },
+    where: {
+      restaurents,
+      id: {
+        [Sequelize.Op.not]: id,
+      },
+    },
+    attributes: { exclude: ["password"] },
+  });
+  return allUsers;
+};
+
+
+export const getallUsers = async () => {
+  const allUsers = await users.findAll({
+    // where: { restaurents },
     attributes: { exclude: ["password"] },
   });
   return allUsers;

@@ -143,6 +143,14 @@ export const updateOneRestoController = async (req, res) => {
       message: "Not authorized, you are not a restaurant admin",
     });
   }
+  if (req.user.restaurents!=req.params.id) {
+    return res.status(401).json({
+      success: false,
+      message: "Not authorized, you are not allowed to edit other's restaurant",
+    });
+  }
+  // console.log(req.user.restaurents)
+  
   try {
 
     const updatedResto = await updateOneResto(req.params.id, req.body);
@@ -166,6 +174,8 @@ export const updateOneRestoController = async (req, res) => {
 };
 
 export const getOneRestaurentController = async (req, res) => {
+
+
   try {
     const { id } = req.params;
     const data = await getOneRestaurentWithDetails(id);

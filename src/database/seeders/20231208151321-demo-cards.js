@@ -6,7 +6,8 @@ module.exports = {
         
         category: "1",
         userid: "5",
-        times: "30",
+        times: "26",
+        duration:'1 month',
         status: "active",
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -16,7 +17,8 @@ module.exports = {
      
         category: "2",
         userid: "6",
-        times: "30",
+        times: "50",
+        duration:'2 month',
         status: "active",
         createdAt: new Date(),
         updatedAt: new Date(),

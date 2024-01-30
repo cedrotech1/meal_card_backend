@@ -23,6 +23,46 @@ export const checkExistingCards = async (name) => {
   });
 };
 
+export const Cardsfor1x = async (rest, id) => {
+  try {
+    const cards = await CardsModel.findAll({
+      include: [
+        {
+          model: users,
+          as: "cardUser",
+          where: { role: "customer", },
+          attributes: ["id", "firstname", "lastname", "email", "phone"],
+          required: false, 
+        },
+        {
+          model: CategoryModel,
+          as: "categories",
+          include: [
+            {
+              model: RestaurentModel,
+              as: "resto",
+            },
+          
+          ],
+         
+        },
+     
+       
+      ],
+    });
+// console.log(id)
+// console.log(rest)     &&  rest.categories.restaurent == Number(rest)
+const ResArray = Array.isArray(cards) ? cards : [];
+const filteredRes = ResArray.find(rest => rest.userid === Number(id));
+    return filteredRes;
+  } catch (error) {
+    console.error("Error fetching all cards with categories:", error);
+    throw error;
+  }
+};
+
+
+
 
 
 export const getAllCardses = async () => {
@@ -72,6 +112,15 @@ export const deleteOneCards = async (id) => {
 
 
 export const updateOneResto = async (id, resto) => {
+  const restoToUpdate = await CardsModel.findOne({ where: { id } });
+  if (restoToUpdate) {
+    await CardsModel.update(resto, { where: { id } });
+    return resto;
+  }
+  return null;
+};
+
+export const useCard = async (id, resto) => {
   const restoToUpdate = await CardsModel.findOne({ where: { id } });
   if (restoToUpdate) {
     await CardsModel.update(resto, { where: { id } });
